@@ -1,7 +1,5 @@
 var telegramBot = require('node-telegram-bot-api'); 
- 
 var token ='387164811:AAFG-YE0wZ9rJaCt3MpGIjWZAEssYWu-LCU'; 
- 
 var api = new telegramBot(token, {polling: true}); 
  
 api.onText(/\/help/, function(msg, match) { 
