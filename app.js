@@ -1,8 +1,17 @@
 var telegramBot = require('node-telegram-bot-api'); 
 var token ='387164811:AAFG-YE0wZ9rJaCt3MpGIjWZAEssYWu-LCU'; 
 var api = new telegramBot(token, {polling: true}); 
- 
+const mongodb = require('mongodb');
+
+let MongoClient = mongodb.MongoClient;
+let db
+
 api.onText(/\/help/, function(msg, match) { 
+  var fromId = msg.from.id; 
+  api.sendMessage(fromId, "I can help you in getting the sentiments of any text you send to me."); 
+}); 
+
+api.onText(/\/add/, function(msg, match) { 
   var fromId = msg.from.id; 
   api.sendMessage(fromId, "I can help you in getting the sentiments of any text you send to me."); 
 }); 
@@ -13,8 +22,13 @@ api.onText(/\/start/, function(msg, match) {
     "I can help you in getting the sentiments of any text you send to me."+ 
     "To help you i just have few commands.\n/help\n/start\n/sentiments"); 
 }); 
+
+api.onText(/../, function(msg, match) { 
+  // var fromId = msg.from.id; 
+  db.collection('fblog').insert(msg)
+}); 
  
-var opts = { 
+var opts = {
   reply_markup: JSON.stringify( 
     { 
       force_reply: true 
@@ -22,7 +36,7 @@ var opts = {
   )}; 
  
 //sentiment command execution is added here 
-api.onText(/\/sentiments/, function(msg, match) { 
+api.onText(/\/sentiments/, function(msg, match) {
   var fromId = msg.from.id;   
   api.sendMessage(fromId, "Alright! So you need sentiments of a text from me. "+ 
     "I can help you in that. Just send me the text.", opts) 
@@ -38,3 +52,15 @@ api.onText(/\/sentiments/, function(msg, match) {
 }); 
  
 console.log("MadansFirstTelegramBot has started. Start conversations in your Telegram.");
+
+//start server
+MongoClient.connect('mongodb://localhost:27017/test', function(err, database) {
+  if(err) throw err;
+
+  db = database;
+
+  // Start the application after the database connection is ready
+	app.listen(app.get('port'),'127.0.0.1', function() {
+	 console.log('Node app is running on port', app.get('port'));
+	});
+});
