@@ -15,7 +15,7 @@ api.onText(/\/add/, function(msg, match) {
   var fromId = msg.from.id; 
   api.sendMessage(fromId, "I can help you in getting the sentiments of any text you send to me."); 
 }); 
- 
+
 api.onText(/\/start/, function(msg, match) { 
   var fromId = msg.from.id; 
   api.sendMessage(fromId, "They call me MadansFirstTelegramBot. " +  
