@@ -10,7 +10,10 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.15.4",
-    "node-telegram-bot-api": "^0.28.0"
+    "lodash": "^4.17.4",
+    "mongodb": "^2.2.33",
+    "node-telegram-bot-api": "^0.28.0",
+    "re": "^0.1.4"
   },
   "engines": {
     "node": ">=5.6.0"
