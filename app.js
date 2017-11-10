@@ -32,9 +32,6 @@ app.set('port', process.env.PORT || 443);
 api.onText(/\/add/, function (msg, match) {
   let fromId = msg.from.id;
   let test = _.pick(msg, ['text'])
-
-
-
   // api.sendMessage(fromId, "Ok. done!")
 
   if (msg.chat.id < 0) {
@@ -54,7 +51,7 @@ api.onText(/\/add/, function (msg, match) {
       'group_id':msg.chat.id,
       'person_id':msg.from.id,
       'item':item,
-      'amount':amount
+      'amount':parseFloat(amount)
     }
 
     db.collection('transact').insert(transact)
