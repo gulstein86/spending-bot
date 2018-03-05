@@ -2,7 +2,8 @@
 
 const telegramBot = require('node-telegram-bot-api');
 const mongodb = require('mongodb');
-const express = require('express')
+const express = require('express');
+const moment = require('moment');
 // const re = require('re')
 const _ = require('lodash')
 
@@ -10,13 +11,18 @@ const app = express()
 
 let MongoClient = mongodb.MongoClient;
 let db
+// let mongod_url = 'mongodb://aswadi:Dianti123@ds147995.mlab.com:47995/eds2'
+let mongod_url = 'mongodb://localhost:27017/telegram'
+
 const token = '387164811:AAFG-YE0wZ9rJaCt3MpGIjWZAEssYWu-LCU';
 const api = new telegramBot(token, {
   polling: true
 });
 
+
+
 //start server
-MongoClient.connect('mongodb://localhost:27017/telegram', function (err, database) {
+MongoClient.connect(mongod_url, function (err, database) {
   if (err) throw err;
 
   db = database;
@@ -41,7 +47,11 @@ api.onText(/\/add/, function (msg, match) {
       upsert: true
     })
 
+    console.log(`whole response: ${msg}`)
+
     let time = new Date(msg.date*1000+28800000)
+    let time2 = moment.unix(msg.date) 
+    console.log('moment time:' + time2)
     let item = msg.text.match((/^\/add\s([a-zA-Z-\s]+)\s\d/))[1]
     let amount = msg.text.match(/([0-9,]+(\.[0-9]{1,2})?)$/)[1]
   
