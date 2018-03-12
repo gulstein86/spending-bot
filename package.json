@@ -10,12 +10,14 @@
   "license": "ISC",
   "dependencies": {
     "asn1": "^0.2.3",
+    "async": "^2.6.0",
     "es-abstract": "^1.10.0",
     "express": "^4.15.4",
     "jshint": "^2.9.5",
     "json-schema": "^0.2.3",
     "lodash": "^4.17.5",
     "moment": "^2.20.1",
+    "moment-timezone": "^0.5.14",
     "mongodb": "^2.2.34",
     "node-telegram-bot-api": "^0.28.0",
     "re": "^0.1.4"

@@ -40,35 +40,38 @@ api.onText(/\/add/, function (msg, match) {
   let test = _.pick(msg, ['text'])
   // api.sendMessage(fromId, "Ok. done!")
 
-  if (msg.chat.id < 0) {
+  if (msg.chat.id < 0) { //message from group
     db.collection('group').updateOne({
       id: msg.chat.id
     }, msg.chat, {
       upsert: true
     })
 
-    console.log(`whole response: ${msg}`)
+    console.log(msg)
 
-    let time = new Date(msg.date*1000+28800000)
-    let time2 = moment.unix(msg.date) 
-    console.log('moment time:' + time2)
+    // let time = new Date(msg.date*1000+28800000)
+    let time = moment.unix(msg.date)
     let item = msg.text.match((/^\/add\s([a-zA-Z-\s]+)\s\d/))[1]
     let amount = msg.text.match(/([0-9,]+(\.[0-9]{1,2})?)$/)[1]
-  
+
     let transact = {
-      'time':msg.date*1000+28800000, //change to KL time
-      'date':time.yyyymmdd(),
-      'group_id':msg.chat.id,
-      'person_id':msg.from.id,
-      'item':item,
-      'amount':parseFloat(amount)
+      'time': msg.date*1000,
+      'group_id': msg.chat.id,
+      'person_id': msg.from.id,
+      'item': item,
+      'amount': parseFloat(amount)
     }
 
     db.collection('transact').insert(transact)
+    db.collection('person').updateOne({
+      id: msg.from.id
+    }, msg.from, {
+      upsert: true
+    })
 
     // db.collection('transact').
 
-  } else(
+  } else( //message from user alone
     db.collection('person').updateOne({
       id: msg.chat.id
     }, msg.chat, {
@@ -77,7 +80,7 @@ api.onText(/\/add/, function (msg, match) {
   )
 
   db.collection('text').insert(test)
-  db.collection('transaction').insert(msg)
+  db.collection('all_transaction').insert(msg)
   console.log(test)
 });
 
@@ -97,7 +100,7 @@ Date.prototype.yyyymmdd = function () {
   var dd = this.getDate();
 
   return [this.getFullYear(),
-      (mm > 9 ? '' : '0') + mm,
-      (dd > 9 ? '' : '0') + dd
+    (mm > 9 ? '' : '0') + mm,
+    (dd > 9 ? '' : '0') + dd
   ].join('');
 };
